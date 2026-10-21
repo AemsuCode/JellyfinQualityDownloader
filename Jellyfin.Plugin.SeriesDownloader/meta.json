@@ -1,0 +1,17 @@
+{
+  "category": "General",
+  "changelog": "Initial release of Series Quality Downloader for Jellyfin 10.10.",
+  "description": "Download entire TV series, seasons, or individual episodes in any resolution, bitrate, CRF, or codec (packaged as a .zip archive or single video file).",
+  "guid": "b8e57364-9a4d-4d87-8c4a-39f1e981d7a2",
+  "name": "Series Quality Downloader",
+  "overview": "Download series, seasons, or episodes in any quality and resolution.",
+  "owner": "SeriesDownloader",
+  "targetAbi": "10.10.0.0",
+  "timestamp": "2026-10-20T22:00:00Z",
+  "version": "1.0.0.0",
+  "status": "Active",
+  "autoUpdate": false,
+  "assemblies": [
+    "Jellyfin.Plugin.SeriesDownloader.dll"
+  ]
+}

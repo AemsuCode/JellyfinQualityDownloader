@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Series Quality Downloader</title>
+</head>
+<body>
+    <div id="SeriesDownloaderConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <div class="verticalSection">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">Series Quality Downloader</h2>
+                    </div>
+                    <p>Download entire TV series, seasons, or episodes in any resolution, bitrate, CRF, or codec (packaged as a <code>.zip</code> archive or single video file).</p>
+                </div>
+
+                <!-- Quick Series Launcher (works even if index.html is read-only) -->
+                <div class="verticalSection" style="background: rgba(0, 164, 220, 0.08); border: 1px solid rgba(0, 164, 220, 0.3); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                    <h3 style="margin-top: 0;">Quick Series Downloader</h3>
+                    <p style="margin-bottom: 12px; opacity: 0.85;">Select any series from your library below to open the Quality &amp; Episode Picker Modal immediately, or click the <strong>Download Quality</strong> button on any Series, Season, or Episode page in Jellyfin.</p>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+                        <div class="selectContainer" style="flex: 1; min-width: 240px; margin-bottom: 0;">
+                            <label class="selectLabel" for="QuickSeriesSelect">Select TV Series</label>
+                            <select is="emby-select" id="QuickSeriesSelect" class="emby-select-withcolor emby-select"></select>
+                        </div>
+                        <button is="emby-button" type="button" id="BtnOpenSeriesModal" class="raised button-submit emby-button" style="margin: 0;">
+                            <span>Choose Quality &amp; Episodes</span>
+                        </button>
+                        <button is="emby-button" type="button" id="BtnOpenJobsModal" class="raised emby-button" style="margin: 0;">
+                            <span>View Active Queue</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Web UI Injection Status -->
+                <div class="verticalSection" style="background: rgba(255,255,255,0.04); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                    <h3 style="margin-top: 0;">Jellyfin Web UI Button Injection</h3>
+                    <p id="InjectionStatusText" style="margin-bottom: 12px;">Checking <code>index.html</code> status...</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button is="emby-button" type="button" id="BtnInjectNow" class="raised emby-button">
+                            <span>Inject Button into Web UI</span>
+                        </button>
+                        <button is="emby-button" type="button" id="BtnRemoveInjection" class="raised emby-button">
+                            <span>Remove from Web UI</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Plugin Configuration Form -->
+                <form id="SeriesDownloaderConfigForm">
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label class="emby-checkbox-label">
+                            <input id="InjectClientScript" name="InjectClientScript" type="checkbox" is="emby-checkbox" />
+                            <span>Automatically inject "Download Quality" button into Jellyfin Web on server startup</span>
+                        </label>
+                        <div class="fieldDescription">Injects a lightweight script tag into Jellyfin's <code>index.html</code> so Series, Season, and Episode detail pages show the Download Quality button automatically.</div>
+                    </div>
+
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="DefaultVideoCodec">Default Video Encoder</label>
+                        <select is="emby-select" id="DefaultVideoCodec" name="DefaultVideoCodec" class="emby-select-withcolor emby-select">
+                            <option value="libx264">H.264 CPU (libx264 - Most Compatible)</option>
+                            <option value="libx265">HEVC / H.265 CPU (libx265)</option>
+                            <option value="h264_nvenc">H.264 NVIDIA NVENC (Hardware)</option>
+                            <option value="hevc_nvenc">HEVC NVIDIA NVENC (Hardware)</option>
+                            <option value="h264_qsv">H.264 Intel QuickSync (Hardware)</option>
+                            <option value="h264_vaapi">H.264 VAAPI (Hardware)</option>
+                        </select>
+                    </div>
+
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="DefaultAudioCodec">Default Audio Encoder</label>
+                        <select is="emby-select" id="DefaultAudioCodec" name="DefaultAudioCodec" class="emby-select-withcolor emby-select">
+                            <option value="aac">AAC (Universal)</option>
+                            <option value="libmp3lame">MP3</option>
+                            <option value="libopus">Opus</option>
+                            <option value="ac3">AC3</option>
+                            <option value="copy">Copy Original Audio Stream</option>
+                        </select>
+                    </div>
+
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="DefaultContainer">Default Container Format</label>
+                        <select is="emby-select" id="DefaultContainer" name="DefaultContainer" class="emby-select-withcolor emby-select">
+                            <option value="mp4">MP4 (.mp4)</option>
+                            <option value="mkv">Matroska (.mkv)</option>
+                        </select>
+                    </div>
+
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="DefaultPreset">Default FFmpeg Encoding Preset</label>
+                        <select is="emby-select" id="DefaultPreset" name="DefaultPreset" class="emby-select-withcolor emby-select">
+                            <option value="ultrafast">Ultrafast</option>
+                            <option value="superfast">Superfast</option>
+                            <option value="veryfast">Veryfast (Recommended)</option>
+                            <option value="faster">Faster</option>
+                            <option value="fast">Fast</option>
+                            <option value="medium">Medium</option>
+                        </select>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="MaxConcurrentTranscodes">Max Concurrent Transcode Jobs</label>
+                        <input id="MaxConcurrentTranscodes" name="MaxConcurrentTranscodes" type="number" is="emby-input" min="1" max="8" />
+                        <div class="fieldDescription">Maximum number of simultaneous FFmpeg transcode jobs allowed across downloads.</div>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="JobRetentionMinutes">Completed Job Retention (Minutes)</label>
+                        <input id="JobRetentionMinutes" name="JobRetentionMinutes" type="number" is="emby-input" min="5" max="10080" />
+                        <div class="fieldDescription">How long completed transcode archives remain in the temporary folder before automatic cleanup.</div>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="TempTranscodeDirectory">Custom Temp Transcode Directory (Optional)</label>
+                        <input id="TempTranscodeDirectory" name="TempTranscodeDirectory" type="text" is="emby-input" />
+                        <div class="fieldDescription">Leave blank to use Jellyfin's default temporary directory.</div>
+                    </div>
+
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                            <span>Save Settings</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            (function () {
+                var pluginId = 'b8e57364-9a4d-4d87-8c4a-39f1e981d7a2';
+                var page = document.querySelector('#SeriesDownloaderConfigPage');
+
+                function ensureClientScriptLoaded() {
+                    if (window.JellyfinSeriesDownloader) {
+                        return Promise.resolve();
+                    }
+                    return new Promise(function (resolve) {
+                        var s = document.createElement('script');
+                        s.src = ApiClient.getUrl('SeriesDownloader/ClientScript');
+                        s.onload = resolve;
+                        s.onerror = resolve;
+                        document.head.appendChild(s);
+                    });
+                }
+
+                function escapeHtml(str) {
+                    return String(str == null ? '' : str)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
+                }
+
+                function refreshInjectionStatus() {
+                    ApiClient.ajax({
+                        type: 'GET',
+                        url: ApiClient.getUrl('SeriesDownloader/InjectionStatus'),
+                        dataType: 'json'
+                    }).then(function (res) {
+                        var el = page.querySelector('#InjectionStatusText');
+                        if (res && res.IsInjected) {
+                            el.innerHTML = 'Status: <strong style="color:#10b981;">Active (' + escapeHtml(res.Mode || 'Injected') + ')</strong> for <code>' + escapeHtml(res.IndexPath || 'index.html') + '</code>. <em>(Press Ctrl+F5 once to refresh cached index.html)</em>';
+                        } else {
+                            el.innerHTML = 'Status: <strong style="color:#f59e0b;">Disabled</strong> for <code>' + escapeHtml(res ? res.IndexPath : 'index.html') + '</code>';
+                        }
+                    }).catch(function () {});
+                }
+
+                function loadSeriesList() {
+                    ApiClient.ajax({
+                        type: 'GET',
+                        url: ApiClient.getUrl('SeriesDownloader/Series'),
+                        dataType: 'json'
+                    }).then(function (list) {
+                        var sel = page.querySelector('#QuickSeriesSelect');
+                        if (!list || !list.length) {
+                            sel.innerHTML = '<option value="">No TV Series found in library</option>';
+                            return;
+                        }
+                        sel.innerHTML = list.map(function (s) {
+                            var yr = s.ProductionYear ? ' (' + escapeHtml(s.ProductionYear) + ')' : '';
+                            return '<option value="' + escapeHtml(s.Id) + '">' + escapeHtml(s.Name) + yr + '</option>';
+                        }).join('');
+                    }).catch(function () {});
+                }
+
+                page.addEventListener('pageshow', function () {
+                    Dashboard.showLoadingMsg();
+                    ensureClientScriptLoaded();
+                    refreshInjectionStatus();
+                    loadSeriesList();
+
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        page.querySelector('#InjectClientScript').checked = config.InjectClientScript !== false;
+                        page.querySelector('#DefaultVideoCodec').value = config.DefaultVideoCodec || 'libx264';
+                        page.querySelector('#DefaultAudioCodec').value = config.DefaultAudioCodec || 'aac';
+                        page.querySelector('#DefaultContainer').value = config.DefaultContainer || 'mp4';
+                        page.querySelector('#DefaultPreset').value = config.DefaultPreset || 'veryfast';
+                        page.querySelector('#MaxConcurrentTranscodes').value = config.MaxConcurrentTranscodes || 1;
+                        page.querySelector('#JobRetentionMinutes').value = config.JobRetentionMinutes || 120;
+                        page.querySelector('#TempTranscodeDirectory').value = config.TempTranscodeDirectory || '';
+                        Dashboard.hideLoadingMsg();
+                    });
+                });
+
+                page.querySelector('#BtnOpenSeriesModal').addEventListener('click', function () {
+                    var seriesId = page.querySelector('#QuickSeriesSelect').value;
+                    if (!seriesId) {
+                        Dashboard.alert('Please select a TV series first.');
+                        return;
+                    }
+                    ensureClientScriptLoaded().then(function () {
+                        if (window.JellyfinSeriesDownloader) {
+                            window.JellyfinSeriesDownloader.openModal(seriesId, 'configure');
+                        }
+                    });
+                });
+
+                page.querySelector('#BtnOpenJobsModal').addEventListener('click', function () {
+                    var seriesId = page.querySelector('#QuickSeriesSelect').value;
+                    ensureClientScriptLoaded().then(function () {
+                        if (window.JellyfinSeriesDownloader) {
+                            window.JellyfinSeriesDownloader.openModal(seriesId || null, 'jobs');
+                        }
+                    });
+                });
+
+                page.querySelector('#BtnInjectNow').addEventListener('click', function () {
+                    ApiClient.ajax({
+                        type: 'POST',
+                        url: ApiClient.getUrl('SeriesDownloader/InjectionStatus?inject=true'),
+                        dataType: 'json'
+                    }).then(function (res) {
+                        Dashboard.alert(res.Message || 'Updated.');
+                        refreshInjectionStatus();
+                    });
+                });
+
+                page.querySelector('#BtnRemoveInjection').addEventListener('click', function () {
+                    ApiClient.ajax({
+                        type: 'POST',
+                        url: ApiClient.getUrl('SeriesDownloader/InjectionStatus?inject=false'),
+                        dataType: 'json'
+                    }).then(function (res) {
+                        Dashboard.alert(res.Message || 'Removed.');
+                        refreshInjectionStatus();
+                    });
+                });
+
+                page.querySelector('#SeriesDownloaderConfigForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        config.InjectClientScript = page.querySelector('#InjectClientScript').checked;
+                        config.DefaultVideoCodec = page.querySelector('#DefaultVideoCodec').value;
+                        config.DefaultAudioCodec = page.querySelector('#DefaultAudioCodec').value;
+                        config.DefaultContainer = page.querySelector('#DefaultContainer').value;
+                        config.DefaultPreset = page.querySelector('#DefaultPreset').value;
+                        config.MaxConcurrentTranscodes = parseInt(page.querySelector('#MaxConcurrentTranscodes').value, 10) || 1;
+                        config.JobRetentionMinutes = parseInt(page.querySelector('#JobRetentionMinutes').value, 10) || 120;
+                        config.TempTranscodeDirectory = page.querySelector('#TempTranscodeDirectory').value.trim();
+
+                        ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                            Dashboard.processPluginConfigurationUpdateResult(result);
+                            refreshInjectionStatus();
+                        });
+                    });
+                    return false;
+                });
+            })();
+        </script>
+    </div>
+</body>
+</html>
