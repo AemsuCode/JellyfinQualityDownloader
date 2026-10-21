@@ -1,6 +1,10 @@
 # Jellyfin Series Quality Downloader Plugin
 
-A Jellyfin 10.10 (`.NET 8.0`) plugin that lets you download entire **TV Series**, **Seasons**, or **Individual Episodes** in **any quality, resolution, bitrate, CRF, or codec** you choose—packaged automatically into a `.zip` archive (or a single video file for individual episodes).
+<p align="center">
+  <img src="Jellyfin.Plugin.SeriesDownloader/thumb.png" alt="Series Quality Downloader Icon" width="180" />
+</p>
+
+A Jellyfin 10.10+ (`.NET 8.0`) plugin that lets you download entire **TV Series**, **Seasons**, or **Individual Episodes** in **any quality, resolution, bitrate, CRF, or codec** you choose—packaged automatically into a `.zip` archive (or a single video file for individual episodes).
 
 ---
 

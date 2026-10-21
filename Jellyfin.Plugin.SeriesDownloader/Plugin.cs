@@ -2,6 +2,7 @@ using System.Globalization;
 using Jellyfin.Plugin.SeriesDownloader.Configuration;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
+using MediaBrowser.Model.Drawing;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
 
@@ -41,6 +42,21 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     /// Gets the application paths.
     /// </summary>
     public IApplicationPaths AppPaths => ApplicationPaths;
+
+    /// <summary>
+    /// Gets the plugin thumbnail image stream.
+    /// </summary>
+    /// <returns>Stream containing the PNG plugin icon.</returns>
+    public Stream? GetThumbImage()
+    {
+        var type = GetType();
+        return type.Assembly.GetManifestResourceStream(type.Namespace + ".thumb.png");
+    }
+
+    /// <summary>
+    /// Gets the plugin thumbnail image format.
+    /// </summary>
+    public ImageFormat ThumbImageFormat => ImageFormat.Png;
 
     /// <inheritdoc />
     public IEnumerable<PluginPageInfo> GetPages()

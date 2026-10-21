@@ -28,7 +28,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Configuration\configPage.html" />
     <EmbeddedResource Include="Web\seriesDownloader.js" />
+    <EmbeddedResource Include="thumb.png" />
     <None Include="meta.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="thumb.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

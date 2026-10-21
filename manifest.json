@@ -6,14 +6,15 @@
     "overview": "Download series, seasons, or episodes in any quality and resolution.",
     "owner": "AemsuCode",
     "category": "General",
+    "imageUrl": "https://raw.githubusercontent.com/AemsuCode/JellyfinQualityDownloader/main/Jellyfin.Plugin.SeriesDownloader/thumb.png",
     "versions": [
       {
         "version": "1.0.0.0",
         "changelog": "Initial release of Series Quality Downloader with full hardware acceleration (Intel QSV, NVIDIA NVENC, VAAPI) and quality/episode picker modal.",
         "targetAbi": "10.10.0.0",
         "sourceUrl": "https://raw.githubusercontent.com/AemsuCode/JellyfinQualityDownloader/main/dist/series-downloader_1.0.0.0.zip",
-        "checksum": "193f289e076e1ab72cbd40f622510ea6",
-        "timestamp": "2026-10-21T01:10:00Z"
+        "checksum": "798163476ee6a9b1d094584353434497",
+        "timestamp": "2026-10-21T01:14:00Z"
       }
     ]
   }
