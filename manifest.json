@@ -11,7 +11,7 @@
         "version": "1.0.0.0",
         "changelog": "Initial release of Series Quality Downloader with full hardware acceleration (Intel QSV, NVIDIA NVENC, VAAPI) and quality/episode picker modal.",
         "targetAbi": "10.10.0.0",
-        "sourceUrl": "https://raw.githubusercontent.com/AemsuCode/JellyfinTranscodeDownload/main/dist/series-downloader_1.0.0.0.zip",
+        "sourceUrl": "https://raw.githubusercontent.com/AemsuCode/JellyfinQualityDownloader/main/dist/series-downloader_1.0.0.0.zip",
         "checksum": "193f289e076e1ab72cbd40f622510ea6",
         "timestamp": "2026-10-21T01:10:00Z"
       }

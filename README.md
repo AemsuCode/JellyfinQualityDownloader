@@ -42,7 +42,7 @@ A Jellyfin 10.10 (`.NET 8.0`) plugin that lets you download entire **TV Series**
    - **Repository Name**: `Series Quality Downloader`
    - **Repository URL**:
      ```text
-     https://raw.githubusercontent.com/AemsuCode/JellyfinTranscodeDownload/main/manifest.json
+     https://raw.githubusercontent.com/AemsuCode/JellyfinQualityDownloader/main/manifest.json
      ```
 2. Go to the **Catalog** tab, find **Series Quality Downloader** under **General**, and click **Install**.
 3. Restart your Jellyfin Server.
