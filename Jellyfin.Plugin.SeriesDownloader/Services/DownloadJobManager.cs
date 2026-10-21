@@ -893,7 +893,6 @@ public sealed class DownloadJobManager : IHostedService, IDisposable
                 forceSoftwareEncoderFallback: false);
 
             entry.Status.HardwareAccelInfo = hwDesc;
-            entry.Status.FfmpegCommand = $"{ffmpegPath} {string.Join(" ", hwPsi.ArgumentList)}";
 
             var (exitCode, stderr) = await RunFfmpegProcessAsync(entry, video, epStatus, hwPsi, ct).ConfigureAwait(false);
             if (exitCode == 0)
@@ -923,7 +922,6 @@ public sealed class DownloadJobManager : IHostedService, IDisposable
             forceSoftwareEncoderFallback: false);
 
         entry.Status.HardwareAccelInfo = swDecodeDesc;
-        entry.Status.FfmpegCommand = $"{ffmpegPath} {string.Join(" ", swDecodePsi.ArgumentList)}";
 
         var (fallbackCode, fallbackStderr) = await RunFfmpegProcessAsync(entry, video, epStatus, swDecodePsi, ct).ConfigureAwait(false);
         if (fallbackCode == 0)
@@ -950,7 +948,6 @@ public sealed class DownloadJobManager : IHostedService, IDisposable
                 forceSoftwareEncoderFallback: true);
 
             entry.Status.HardwareAccelInfo = cpuDesc;
-            entry.Status.FfmpegCommand = $"{ffmpegPath} {string.Join(" ", cpuPsi.ArgumentList)}";
 
             var (cpuCode, cpuStderr) = await RunFfmpegProcessAsync(entry, video, epStatus, cpuPsi, ct).ConfigureAwait(false);
             if (cpuCode == 0)

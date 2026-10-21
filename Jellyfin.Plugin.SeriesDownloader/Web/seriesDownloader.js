@@ -1056,12 +1056,6 @@
                                 `}
                             </div>
                         </div>
-                        ${job.FfmpegCommand ? `
-                            <details style="font-size:0.75rem; color:#9ca3af; margin-top:4px;">
-                                <summary style="cursor:pointer;">Show active FFmpeg command</summary>
-                                <code style="display:block; margin-top:4px; padding:6px; background:#141417; border-radius:4px; word-break:break-all; color:#a1a1aa;">${escapeHtml(job.FfmpegCommand)}</code>
-                            </details>
-                        ` : ''}
                     </div>
                 `;
             }).join('');
